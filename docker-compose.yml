@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    restart: always
+  product:
+    build: product-service
+    environment:
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    restart: always
+  cart:
+    build: cart-service
+    environment:
+      PORT: 8081
+      PRODUCT_SERVICE_HOST: product:8080
+      REDIS_URL: redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+      - product
+    restart: always
+  shipping:
+    build: shipping-service
+    environment:
+      PORT: 8082
+      CART_SERVICE_HOST: product:8080
+    ports:
+      - "8082:8082"
+    depends_on:
+      - cart
+    restart: always

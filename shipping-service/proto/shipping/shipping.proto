@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package  = "github.com/iruldev/warung-pintar-test/shipping-service/proto/shipping";
+
+package shipping;
+
+message CalculateShippingResponse {
+    int32 Cost = 1;
+}
+
+service Shipping {
+    rpc CalculateShipping(google.protobuf.Empty) returns (CalculateShippingResponse);
+}
